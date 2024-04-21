@@ -97,9 +97,9 @@ export class ClickUpClient {
       },
     });
     return {
-      weekStartDay: response.data['week_start_day'],
-      globalFontSupport: response.data['global_font_support'],
-      ...response.data,
+      weekStartDay: response.data['user']['week_start_day'],
+      globalFontSupport: response.data['user']['global_font_support'],
+      ...response.data['user'],
     };
   }
 }
