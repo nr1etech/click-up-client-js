@@ -15,11 +15,11 @@ export class ClickUpClient {
   protected client: AxiosInstance;
   protected url: string;
   protected authorization?: string;
-  constructor(config: ClickUpClientCOnfig) {
-    this.client = config.client ?? axios.create();
-    this.url = config.url ?? API_URL;
-    this.authorization = config.authorization;
-    if (config.debug) {
+  constructor(config?: ClickUpClientCOnfig) {
+    this.client = config?.client ?? axios.create();
+    this.url = config?.url ?? API_URL;
+    this.authorization = config?.authorization;
+    if (config?.debug) {
       this.logRequests();
       this.logResponses();
     }
@@ -54,6 +54,16 @@ export class ClickUpClient {
       throw new ClickUpClientError('authorization is not set');
     }
     return this.authorization;
+  }
+
+  getOAuthRedirect(
+    clientId: string,
+    callbackUri: string,
+    state?: string
+  ): string {
+    return state
+      ? `https://app.clickup.com/api?client_id=${clientId}&state=${state}&redirect_uri=${callbackUri}`
+      : `https://app.clickup.com/api?client_id=${clientId}&redirect_uri=${callbackUri}`;
   }
 
   async exchangeCodeForToken(
